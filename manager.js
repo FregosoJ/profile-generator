@@ -17,16 +17,5 @@ class Manager extends Employee {
         return "Manager";
     }
 }
-
+// exporting the file Manager
 module.exports = Manager;
-
-
-// const managerPromp = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'officeNumber',
-//             message: 'What is your name?',
-//         },
-//     ])
-// }

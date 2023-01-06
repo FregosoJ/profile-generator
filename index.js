@@ -1,3 +1,4 @@
+// Grabbing info from other files by using require.
 const fs = require("fs");
 const inquirer = require("inquirer");
 const Employee = require("./employee")
@@ -8,7 +9,7 @@ let intern;
 let engineer;
 let manager;
 
-
+// First prompt in the questions 
 function promptUser() {
     inquirer
         .prompt([
@@ -32,12 +33,13 @@ function promptUser() {
                 name: "officeNumber",
                 message: "What is your office number?"
             }
-        ])
+        ]) 
         .then((Employee) => {
             manager = new Manager(Employee.name, Employee.id, Employee.email, Employee.officeNumber)
+            // addEmployee is being called after you finish answering the first set of ? witch takes you to line 42
             addEmployee()
         })
-    }
+    }   //addEmployee question staet at line 47
     const addEmployee = () => {
         inquirer.prompt({
             type: "list",
@@ -48,7 +50,7 @@ function promptUser() {
                 "Add an Intern.",
                 "I'm done building my team."
             ]
-        })
+        })  // setting if statement to move the user the next step weather they choose engineer or inter 
             .then(answer => {
                 if (answer.next == "Add an Engineer.") {
                     addEngineer()
@@ -60,7 +62,7 @@ function promptUser() {
             }
             })
     }
-
+      // Engineer questions 
     const addEngineer = () => {
         inquirer.prompt(
             [
@@ -87,10 +89,12 @@ function promptUser() {
             ])
             .then(engineerData => {
                 engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
+                // addEmployee is being called after you finish answering the set of ? witch takes you back to line 42
                 addEmployee()
             })
 
     }
+     //Inter questions 
     const addIntern = () => {
         inquirer.prompt([
             {
@@ -120,7 +124,7 @@ function promptUser() {
             })
     }
 
-
+// Creating an html file using fs.writeFile this is the template 
 const generateHTML = () => fs.writeFileSync( "Team.html",  `
 <!DOCTYPE html>
 <html lang="en">
@@ -173,7 +177,7 @@ const generateHTML = () => fs.writeFileSync( "Team.html",  `
 </ul>
 </div>
 `)
-// WriteFileSync as a promise
+// Using init to start the at promptUser
 const init = () => {
     promptUser()
 };

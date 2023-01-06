@@ -11,26 +11,10 @@ class Intern extends Employee {
     getSchool() {
         return this.school;
     }
-
+   
     getRole() {
         return "Intern";
     }
 }
-
+// exporting the file Intern
 module.exports = Intern;
-
-
-// const interPromt = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'school',
-//             message: 'What school did you attend?',
-//         },
-//         {
-//             type: 'input',
-//             name: 'name',
-//             message: 'What is your name?',
-//         }
-//     ])
-// }

@@ -16,15 +16,5 @@ class Engineer extends Employee {
         return "Engineer";
     }
 }
-
+// exporting the file Engineer
 module.exports = Engineer;
-
-// const engineerPromt = () => {
-//     return inquirer.prompt([
-//         {
-//             type: 'input',
-//             name: 'gitHub',
-//             message: 'What is your GitHub user name?',
-//         },
-//     ])
-// }
