@@ -25,27 +25,4 @@ class Employee {
 module.exports = Employee;
 
 
-// const promptUser = () => {
-//   return inquirer.prompt([
-//     {
-//         type: 'input',
-//         name: 'name',
-//         message: 'What is your name?',
-//     },
-//     {
-//         type: 'input',
-//         name: 'id',
-//         message: 'What is your employee id?',
-//     },
-//     {
-//         type: 'input',
-//         name: 'email',
-//         message: 'What is your emial address?',
-//     },
-//     {
-//         type: 'input',
-//         name: 'Phone',
-//         message: 'What is your Phone Number?',
-//     },
-//   ]);
-// };
+

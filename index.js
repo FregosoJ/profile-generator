@@ -4,6 +4,9 @@ const Employee = require("./employee")
 const Manager = require("./manager");
 const Engineer = require("./engineer");
 const Intern = require("./intern");
+let intern;
+let engineer;
+let manager;
 
 
 function promptUser() {
@@ -30,69 +33,95 @@ function promptUser() {
                 message: "What is your office number?"
             }
         ])
-        .then((employee) => {
-            generateHTML();
+        .then((Employee) => {
+            manager = new Manager(Employee.name, Employee.id, Employee.email, Employee.officeNumber)
+            addEmployee()
         })
-}
-
-const addEmployee = {
-    type: "list",
-    name: "next",
-    message: "How would you like to cointinue building your team?",
-    choices: [
-        "Add an Engineer.",
-        "Add an Intern.",
-        "I'm done building my team."
-    ]
-}
-
-const addEngineerQs = [
-    {
-        type: "input",
-        name: "name",
-        message: "What is your name engineer?"
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "What is the ID number of this engineer?"
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is the email address of the engineer?"
-    },
-    {
-        type: "input",
-        name: "github",
-        message: "What is the github username of the engineer?"
     }
-]
-
-const addInternQs = [
-    {
-        type: "input",
-        name: "name",
-        message: "What is the name of the intern?"
-    },
-    {
-        type: "input",
-        name: "id",
-        message: "What is the ID number of your the intern?"
-    },
-    {
-        type: "input",
-        name: "email",
-        message: "What is the email address of the intern?"
-    },
-    {
-        type: "input",
-        name: "school",
-        message: "Where does this intern go to school?"
+    const addEmployee = () => {
+        inquirer.prompt({
+            type: "list",
+            name: "next",
+            message: "How would you like to cointinue building your team?",
+            choices: [
+                "Add an Engineer.",
+                "Add an Intern.",
+                "I'm done building my team."
+            ]
+        })
+            .then(answer => {
+                if (answer.next == "Add an Engineer.") {
+                    addEngineer()
+                } else if (answer.next == "Add an Intern."){
+                    addIntern()
+                }
+            else {
+                generateHTML()
+            }
+            })
     }
-]
 
-const generateHTML = (Manager) => `
+    const addEngineer = () => {
+        inquirer.prompt(
+            [
+                {
+                    type: "input",
+                    name: "name",
+                    message: "What is your name engineer?"
+                },
+                {
+                    type: "input",
+                    name: "id",
+                    message: "What is the ID number of this engineer?"
+                },
+                {
+                    type: "input",
+                    name: "email",
+                    message: "What is the email address of the engineer?"
+                },
+                {
+                    type: "input",
+                    name: "github",
+                    message: "What is the github username of the engineer?"
+                }
+            ])
+            .then(engineerData => {
+                engineer = new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github)
+                addEmployee()
+            })
+
+    }
+    const addIntern = () => {
+        inquirer.prompt([
+            {
+                type: "input",
+                name: "name",
+                message: "What is the name of the intern?"
+            },
+            {
+                type: "input",
+                name: "id",
+                message: "What is the ID number of your the intern?"
+            },
+            {
+                type: "input",
+                name: "email",
+                message: "What is the email address of the intern?"
+            },
+            {
+                type: "input",
+                name: "school",
+                message: "Where does this intern go to school?"
+            }
+        ])
+            .then(internData => {
+                intern = new Intern(internData.name, internData.id, internData.email, internData.school)
+                addEmployee()
+            })
+    }
+
+
+const generateHTML = () => fs.writeFileSync( "Team.html",  `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,54 +141,46 @@ const generateHTML = (Manager) => `
         <div class ="row justify-content-around">
             <div class="card col-12 col-md-6 col-lg-4">
                 <div class="card-header">
-                  ${Manager}
-                  ${Manager.getRole()}
+                  ${manager.name}
+                  ${manager.getRole()}
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">ID: ${Manager.id}</li>
-                    <li class="list-group-item">Email: ${Manager.email}</li>
-                    <li class="list-group-item">Office number: ${Manager.officeNumber}</li>
+                    <li class="list-group-item">ID: ${manager.id}</li>
+                    <li class="list-group-item">Email:  <a href = "mailto:${manager.email}">${manager.email}</a></li>
+                    <li class="list-group-item">Office number: ${manager.officeNumber}</li>
                 </ul>
             </div>
             <div class="card col-12 col-md-6 col-lg-4">
 <div class="card-header">
-  ${Intern.name}
-  ${Intern.getRole()}
+  ${intern.name}
+  ${intern.getRole()}
 </div>
 <ul class="list-group list-group-flush">
-    <li class="list-group-item">ID: ${Intern.id}</li>
-    <li class="list-group-item">Email: ${Intern.email}</li>
-    <li class="list-group-item">School: ${Intern.getSchool()}</li>
+    <li class="list-group-item">ID: ${intern.id}</li>
+    <li class="list-group-item">Email:  <a href = "mailto:${intern.email}">${intern.email}</a></li>
+    <li class="list-group-item">School: ${intern.getSchool()}</li>
 </ul>
 </div>
 <div class="card col-12 col-md-6 col-lg-4">
 <div class="card-header">
-  ${Engineer.name}
-  ${Engineer.getRole()}
+  ${engineer.name}
+  ${engineer.getRole()}
 </div>
 <ul class="list-group list-group-flush">
-    <li class="list-group-item">ID: ${Engineer.id}</li>
-    <li class="list-group-item">Email: ${Engineer.email}</li>
-    <li class="list-group-item">Github: ${Engineer.github}</li>
+    <li class="list-group-item">ID: ${engineer.id}</li>
+    <li class="list-group-item">Email:  <a href = "mailto:${engineer.email}">${engineer.email}</a></li>
+    <li class="list-group-item">Github: ${engineer.github}</li>
 </ul>
 </div>
-`
+`)
 // WriteFileSync as a promise
 const init = () => {
     promptUser()
-        // Use writeFile method imported from fs.promises to use promises instead of
-        // a callback function
-        .then((answers) => writeFile('index.html', generateHTML(answers)))
-        .then(() => console.log('Successfully wrote to index.html'))
-        .catch((err) => console.error(err));
 };
 
 
 init();
-addEmployee();
-addEngineerQs();
-addInternQs();
-generateHTML();
+
 
 
 
